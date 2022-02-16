@@ -1,0 +1,43 @@
+parameters:
+- name: serviceConnection
+  type: string    
+  default: ''
+
+- name: workingFolder 
+  type: string    
+  default: ''
+
+- name: applyChanges
+  type: boolean    
+  default: false
+
+steps:
+  - checkout: self
+  - task: AzureCLI@2
+    displayName: "Plan deployment"
+    inputs:
+      azureSubscription: ${{ parameters.serviceConnection }}
+      scriptType: "bash"
+      scriptLocation: "inlineScript"
+      addSpnToEnvironment: true
+      workingDirectory: ${{ parameters.workingFolder }}
+      inlineScript: |
+        az deployment sub what-if --location brazilsouth --template-file main.bicep \
+        --parameters param_buildNumber="$(Build.BuildNumber)" \
+                     param_env_id="$(System.StageName)" \
+                     param_secret_pwd_example="$(secret_pwd_example)"
+
+  - task: AzureCLI@2
+    displayName: "Apply deployment"
+    condition: eq('${{ parameters.applyChanges }}', true)
+    inputs:
+      azureSubscription: ${{ parameters.serviceConnection }}
+      scriptType: "bash"
+      scriptLocation: "inlineScript"
+      addSpnToEnvironment: true
+      workingDirectory: ${{ parameters.workingFolder }}
+      inlineScript: |
+        az deployment sub create -n "deployment-$(Build.BuildNumber)" --location brazilsouth --template-file main.bicep \
+        --parameters param_buildNumber="$(Build.BuildNumber)" \
+                     param_env_id="$(System.StageName)" \
+                     param_secret_pwd_example="$(secret_pwd_example)"

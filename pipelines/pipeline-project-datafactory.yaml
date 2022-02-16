@@ -1,0 +1,82 @@
+pool:
+  vmImage: "ubuntu-latest"
+
+trigger: none
+
+parameters:
+- name: applyChanges
+  displayName: "Apply changes?"
+  default: false
+  values:
+    - true
+    - false
+
+stages:
+  - stage: dev
+    displayName: "DEV"
+    dependsOn: []
+    variables:
+      - group: project-datafactory-dev
+    jobs:
+      - job: azureResourcesBicep
+        displayName: "Update Azure Resources (Bicep)"
+        steps:
+        - template: templates/template-azure-deployment.yaml
+          parameters:
+            serviceConnection: "reg-dev-br-project (SPN)"
+            applyChanges: ${{ parameters.applyChanges }}
+            workingFolder : "$(System.DefaultWorkingDirectory)/bicep"
+
+  - stage: sit
+    displayName: "SIT"
+    dependsOn: []
+    variables:
+      - group: project-datafactory-sit
+    jobs:
+      - job: azureResourcesBicep
+        displayName: "Update Azure Resources (Bicep)"
+        steps:
+        - template: templates/template-azure-deployment.yaml
+          parameters:
+            serviceConnection: "reg-dev-br-project (SPN)"
+            applyChanges: ${{ parameters.applyChanges }}
+            workingFolder : "$(System.DefaultWorkingDirectory)/bicep"
+
+  - stage: uat
+    displayName: "UAT"
+    dependsOn: []
+    variables:
+      - group: project-datafactory-uat
+    jobs:
+      - job: azureResourcesBicep
+        displayName: "Update Azure Resources (Bicep)"
+        steps:
+        - template: templates/template-azure-deployment.yaml
+          parameters:
+            serviceConnection: "reg-prd-br-project (SPN)"
+            applyChanges: ${{ parameters.applyChanges }}
+            workingFolder : "$(System.DefaultWorkingDirectory)/bicep"
+
+  - stage: prd
+    displayName: "PRD"
+    dependsOn: []
+    variables:
+      - group: project-datafactory-prd
+    jobs:
+      - deployment: GetApprovals
+        displayName: "Get Business Owner approval"
+        environment: 'project-datafactory-prd'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - script: echo "Approved"
+      - job: azureResourcesBicep
+        displayName: "Update Azure Resources (Bicep)"
+        steps:
+        - template: templates/template-azure-deployment.yaml
+          parameters:
+            serviceConnection: "reg-prd-br-project (SPN)"
+            applyChanges: ${{ parameters.applyChanges }}
+            workingFolder : "$(System.DefaultWorkingDirectory)/bicep"
+
