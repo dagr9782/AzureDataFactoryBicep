@@ -4,20 +4,23 @@ param location string = resourceGroup().location
 @description('Environment')
 param env_id string
 
+@description('VNET Address')
+param param_vnet_address string
+
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' = {
   name: 'vn-${env_id}-br-project-datafactory'
   location: location
   properties: {
     addressSpace: {
       addressPrefixes: [
-        'CHANGE: 10.10.37.0/24'
+        param_vnet_address
       ]
     }
     subnets: [
       {
         name: 'sn-${env_id}-br-project-datafactory'
         properties: {
-          addressPrefix: 'CHANGE: 10.10.37.0/24'
+          addressPrefix: param_vnet_address
           networkSecurityGroup: {
               id: networkSecurityGroup.id
           }

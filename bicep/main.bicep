@@ -4,6 +4,8 @@ param location string = 'brazilsouth'
 param param_buildNumber string
 param param_env_id string
 param param_secret_pwd_example string
+param param_vnet_address string
+param param_adf_ir bool
 
 targetScope = 'subscription'
 
@@ -18,6 +20,7 @@ module network 'network/main.bicep' = {
   params: {
     env_id: param_env_id
     location: location
+    param_vnet_address: param_vnet_address
   }
 }
 
@@ -37,5 +40,6 @@ module dataFactory 'datafactory/main.bicep' = {
   params: {
     env_id: param_env_id
     location: location
+    adf_ir: param_adf_ir
   }
 }

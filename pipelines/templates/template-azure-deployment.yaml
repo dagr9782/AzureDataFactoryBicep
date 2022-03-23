@@ -11,6 +11,10 @@ parameters:
   type: boolean    
   default: false
 
+- name: includeIR
+  type: boolean    
+  default: false
+
 steps:
   - checkout: self
   - task: AzureCLI@2
@@ -25,7 +29,9 @@ steps:
         az deployment sub what-if --location brazilsouth --template-file main.bicep \
         --parameters param_buildNumber="$(Build.BuildNumber)" \
                      param_env_id="$(System.StageName)" \
-                     param_secret_pwd_example="$(secret_pwd_example)"
+                     param_secret_pwd_example="$(secret_pwd_example)" \
+                     param_vnet_address="$(vnet_address)" \
+                     param_adf_ir="${{ parameters.includeIR }}"
 
   - task: AzureCLI@2
     displayName: "Apply deployment"
@@ -40,4 +46,6 @@ steps:
         az deployment sub create -n "deployment-$(Build.BuildNumber)" --location brazilsouth --template-file main.bicep \
         --parameters param_buildNumber="$(Build.BuildNumber)" \
                      param_env_id="$(System.StageName)" \
-                     param_secret_pwd_example="$(secret_pwd_example)"
+                     param_secret_pwd_example="$(secret_pwd_example)" \
+                     param_vnet_address="$(vnet_address)" \
+                     param_adf_ir="${{ parameters.includeIR }}"

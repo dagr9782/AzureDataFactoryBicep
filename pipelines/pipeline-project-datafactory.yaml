@@ -10,6 +10,12 @@ parameters:
   values:
     - true
     - false
+- name: includeIR
+  displayName: "Deploy Integration Runtime?"
+  default: false
+  values:
+    - true
+    - false
 
 stages:
   - stage: dev
@@ -26,6 +32,7 @@ stages:
             serviceConnection: "reg-dev-br-project (SPN)"
             applyChanges: ${{ parameters.applyChanges }}
             workingFolder : "$(System.DefaultWorkingDirectory)/bicep"
+            includeIR: ${{ parameters.includeIR }}
 
   - stage: sit
     displayName: "SIT"
@@ -41,6 +48,7 @@ stages:
             serviceConnection: "reg-dev-br-project (SPN)"
             applyChanges: ${{ parameters.applyChanges }}
             workingFolder : "$(System.DefaultWorkingDirectory)/bicep"
+            includeIR: ${{ parameters.includeIR }}
 
   - stage: uat
     displayName: "UAT"
@@ -56,6 +64,7 @@ stages:
             serviceConnection: "reg-prd-br-project (SPN)"
             applyChanges: ${{ parameters.applyChanges }}
             workingFolder : "$(System.DefaultWorkingDirectory)/bicep"
+            includeIR: ${{ parameters.includeIR }}
 
   - stage: prd
     displayName: "PRD"
@@ -78,5 +87,6 @@ stages:
           parameters:
             serviceConnection: "reg-prd-br-project (SPN)"
             applyChanges: ${{ parameters.applyChanges }}
-            workingFolder : "$(System.DefaultWorkingDirectory)/bicep"
+            workingFolder : "$(System.DefaultWorkingDirectory)/bicep
+            includeIR: ${{ parameters.includeIR }}"
 

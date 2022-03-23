@@ -1,0 +1,85 @@
+pool:
+  vmImage: "ubuntu-latest"
+
+trigger: none
+
+parameters:
+- name: PipelineName
+  type: string
+  default: ReportABC
+- name: ReportingDate
+  type: string
+  default: 20220308
+
+stages:
+  - stage: dev
+    displayName: "DEV"
+    jobs:
+    - job: Job_1
+      displayName: Data Factory DEV
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: 'Data Factory DEV'
+        inputs:
+          azureSubscription: 'reg-dev-br-project (SPN)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
+            az datafactory pipeline create-run --factory-name "adf-dev-br-project-datafactory" --parameters "{\"pipeline_parameter\":\"${{parameters.ReportingDate}}\"}" --name "${{parameters.PipelineName}}" --resource-group "rg-dev-br-project-datafactory"
+
+  - stage: sit
+    displayName: "SIT"
+    jobs:
+    - job: Job_1
+      displayName: Data Factory SIT
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: 'Data Factory SIT'
+        inputs:
+          azureSubscription: 'reg-dev-br-project (SPN)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
+            az datafactory pipeline create-run --factory-name "adf-sit-br-project-datafactory" --parameters "{\"pipeline_parameter\":\"${{parameters.ReportingDate}}\"}" --name "${{parameters.PipelineName}}" --resource-group "rg-sit-br-project-datafactory"
+
+#  - stage: uat
+#    displayName: "UAT"
+#    jobs:
+#    - job: Job_1
+#      displayName: Data Factory UAT
+#      steps:
+#      - checkout: self
+#      - task: AzureCLI@2
+#        displayName: 'Data Factory UAT'
+#        inputs:
+#          azureSubscription: 'reg-prd-br-project (SPN)'
+#          scriptType: 'bash'
+#          scriptLocation: 'inlineScript'
+#          inlineScript: 'az datafactory pipeline create-run --factory-name "adf-uat-br-project-datafactory" --parameters "{\"pipeline_parameter\":\"${{parameters.ReportingDate}}\"}" --name "${{parameters.PipelineName}}" --resource-group "rg-uat-br-project-datafactory"'
+
+#  - stage: prd
+#    displayName: "PRD"
+#    jobs:
+#    - deployment: GetApprovals
+#      displayName: "Get Business Owner approval"
+#      environment: 'project-prd'
+#      strategy:
+#        runOnce:
+#          deploy:
+#            steps:
+#            - script: echo "Approved"
+#    - job: Job_1
+#      displayName: Data Factory PRD
+#      steps:
+#      - checkout: self
+#      - task: AzureCLI@2
+#        displayName: 'Data Factory PRD'
+#        inputs:
+#          azureSubscription: 'reg-prd-br-project (SPN)'
+#          scriptType: 'bash'
+#          scriptLocation: 'inlineScript'
+#          inlineScript: 'az datafactory pipeline create-run --factory-name "adf-prd-br-project-datafactory" --parameters "{\"pipeline_parameter\":\"${{parameters.ReportingDate}}\"}" --name "${{parameters.PipelineName}}" --resource-group "rg-prd-br-project-datafactory"'
