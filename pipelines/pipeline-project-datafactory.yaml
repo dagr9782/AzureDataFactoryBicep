@@ -87,6 +87,6 @@ stages:
           parameters:
             serviceConnection: "reg-prd-br-project (SPN)"
             applyChanges: ${{ parameters.applyChanges }}
-            workingFolder : "$(System.DefaultWorkingDirectory)/bicep
-            includeIR: ${{ parameters.includeIR }}"
+            workingFolder : "$(System.DefaultWorkingDirectory)/bicep"
+            includeIR: ${{ parameters.includeIR }}
 
