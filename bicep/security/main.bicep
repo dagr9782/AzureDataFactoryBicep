@@ -50,6 +50,17 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
       family: 'A'
     }
     accessPolicies: accessPolicies
+    networkAcls: {
+      bypass: 'None'
+      defaultAction: 'Deny'
+      virtualNetworkRules: [
+          {
+            id: resourceId('Microsoft.Network/VirtualNetworks/subnets', 'vn-${env_id}-br-project-datafactory', 'sn-${env_id}-br-project-datafactory')
+          }
+      ]
+      ipRules: []
+    }
+    publicNetworkAccess: 'disabled'
   }
   dependsOn: [
     virtualNetwork
