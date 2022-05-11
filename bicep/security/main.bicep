@@ -51,7 +51,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     }
     accessPolicies: accessPolicies
     networkAcls: {
-      bypass: 'None'
+      bypass: 'AzureServices'
       defaultAction: 'Deny'
       virtualNetworkRules: [
           {
