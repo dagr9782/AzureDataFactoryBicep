@@ -59,7 +59,7 @@ resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes
     typeProperties: {
       linkedInfo: {
         authorizationType: 'RBAC'
-        resourceId: 'ir${env_id}'
+        resourceId: linkedIR
       }
     }
   }
