@@ -10,7 +10,7 @@ param param_adf_ir bool
 targetScope = 'subscription'
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01' = {
-  name: 'rg-${param_env_id}-br-project-datafactory'
+  name: 'rg-${param_env_id}-br-project'
   location: location
 }
 
