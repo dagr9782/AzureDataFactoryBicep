@@ -31,17 +31,17 @@ var accessPolicies = [
 ]
 
 resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
-  name: 'adf-${env_id}-br-project-datafactory'
+  name: 'adf-${env_id}-br-project'
 }
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' existing = {
-  name: 'vn-${env_id}-br-project-datafactory'
+  name: 'vn-${env_id}-br-project'
 }
 
 // Vault
 
 resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
-  name: 'akv-${env_id}-br-project-datafactory'
+  name: 'akv-${env_id}-br-project'
   location: location
   properties: {
     tenantId: tenantId
@@ -55,7 +55,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
       defaultAction: 'Deny'
       virtualNetworkRules: [
           {
-            id: resourceId('Microsoft.Network/VirtualNetworks/subnets', 'vn-${env_id}-br-project-datafactory', 'sn-${env_id}-br-project-datafactory')
+            id: resourceId('Microsoft.Network/VirtualNetworks/subnets', 'vn-${env_id}-br-project', 'sn-${env_id}-br-project')
           }
       ]
       ipRules: []
@@ -70,7 +70,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
 // Secrets
 
 resource secret_pwd_project 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
-  name: 'akv-${env_id}-br-project-datafactory/pwd-example'
+  name: 'akv-${env_id}-br-project/pwd-example'
   properties: {
     value: param_secret_pwd_example
   }
