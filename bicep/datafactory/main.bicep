@@ -26,7 +26,7 @@ param gitCollaborationBranch string = 'master'
 param gitRootFolder string = '/'
 
 resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
-  name: 'adf-${env_id}-br-project-datafactory'
+  name: 'adf-${env_id}-br-project'
   location: location
   identity: {
     type: 'SystemAssigned'
@@ -52,7 +52,7 @@ var sub = (env_id=='dev' || env_id=='sit') ? '8af6aa43-048b-4792-aa87-a8aa7c7b7b
 var linkedIR = '/subscriptions/${sub}/resourcegroups/rg-${env_id}-br-dataintegration/providers/Microsoft.DataFactory/factories/adf-${env_id}-br-dataintegration/integrationruntimes/ir-${env_id}-br-dataintegration'
 
 resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01' = if (adf_ir) {
-  name: 'ir-${env_id}-br-project-datafactory'
+  name: 'ir-${env_id}-br-project'
   parent: dataFactory
   properties: {
     type: typeIR
