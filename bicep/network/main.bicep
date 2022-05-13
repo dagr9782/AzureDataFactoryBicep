@@ -8,7 +8,7 @@ param env_id string
 param param_vnet_address string
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' = {
-  name: 'vn-${env_id}-br-project-datafactory'
+  name: 'vn-${env_id}-br-project'
   location: location
   properties: {
     addressSpace: {
@@ -18,7 +18,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' = {
     }
     subnets: [
       {
-        name: 'sn-${env_id}-br-project-datafactory'
+        name: 'sn-${env_id}-br-project'
         properties: {
           addressPrefix: param_vnet_address
           networkSecurityGroup: {
@@ -36,6 +36,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' = {
 }
 
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-03-01' = {
-  name: 'nsg-${env_id}-br-project-datafactory'
+  name: 'nsg-${env_id}-br-project'
   location: location
 }
