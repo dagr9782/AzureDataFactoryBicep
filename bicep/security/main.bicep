@@ -40,7 +40,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' existing 
 
 // Vault
 
-resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
   name: 'akv-${env_id}-br-project-datafactory'
   location: location
   properties: {
