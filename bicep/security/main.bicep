@@ -60,7 +60,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
       ]
       ipRules: []
     }
-    publicNetworkAccess: 'disabled'
+    publicNetworkAccess: 'Disabled'
   }
   dependsOn: [
     virtualNetwork
