@@ -20,7 +20,7 @@ param skuName string = 'standard'
 var accessPolicies = [
   {
     tenantId: tenantId
-    objectId: dataFactory.id // Data Factory Managed Identity Object ID
+    objectId: dataFactory.identity.principalId // Data Factory Managed Identity Object ID
     permissions: {
       secrets: [
         'get'
