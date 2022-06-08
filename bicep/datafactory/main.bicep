@@ -64,3 +64,26 @@ resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes
     }
   }
 }
+
+/*
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
+  name: 'pe-adf-${env_id}-br-project'
+  location: location
+  properties: {
+    privateLinkServiceConnections: [
+      {
+        name: 'pe-adf-${env_id}-br-project'
+        properties: {
+          privateLinkServiceId: dataFactory.id
+          groupIds: [
+            'dataFactory'
+          ]
+        }
+      }
+    ]
+    subnet: {
+      id: resourceId('Microsoft.Network/VirtualNetworks/subnets', 'vn-${env_id}-br-project', 'sn-${env_id}-br-project')
+    }
+  }
+}
+*/
