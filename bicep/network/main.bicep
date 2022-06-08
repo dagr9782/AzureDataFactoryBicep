@@ -1,6 +1,8 @@
 @description('Location for all resources')
 param location string = resourceGroup().location
 
+param tagValues object
+
 @description('Environment')
 param env_id string
 
@@ -33,9 +35,11 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' = {
       }
     ]
   }
+  tags: tagValues
 }
 
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-03-01' = {
   name: 'nsg-${env_id}-br-project'
   location: location
+  tags: tagValues
 }

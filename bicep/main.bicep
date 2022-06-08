@@ -50,9 +50,20 @@ module dataFactory 'datafactory/main.bicep' = {
   scope: resourceGroup
   name: 'datafactory-${param_buildNumber}'
   params: {
+    adf_ir: param_adf_ir
     env_id: param_env_id
     location: location
-    adf_ir: param_adf_ir
     tagValues: tagValues
   }
 }
+/*
+module storage 'storage/main.bicep' = {
+  scope: resourceGroup
+  name: 'storage-${param_buildNumber}'
+  params: {
+    env_id: param_env_id
+    location: location
+    tagValues: tagValues
+  }
+}
+*/

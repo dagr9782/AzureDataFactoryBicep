@@ -4,6 +4,8 @@ param tenantId string = '6e93a626-8aca-4dc1-9191-ce291b4b75a1'
 @description('Location for all resources')
 param location string = resourceGroup().location
 
+param tagValues object
+
 @description('Environment')
 param env_id string
 
@@ -62,6 +64,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
     }
     publicNetworkAccess: 'Disabled'
   }
+  tags: tagValues
 }
 
 // Secrets

@@ -1,6 +1,8 @@
 @description('Location for all resources')
 param location string = resourceGroup().location
 
+param tagValues object
+
 @description('Environment')
 param env_id string
 
@@ -36,9 +38,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
     publicNetworkAccess: 'Enabled'
     repoConfiguration: (env_id == 'dev') ? json('{"type": "${gitRepoType}","accountName": "${gitAccountName}","repositoryName": "${gitRepositoryName}","projectName": "${gitProjectName}","collaborationBranch": "${gitCollaborationBranch}","rootFolder": "${gitRootFolder}"}') : null
   }
-  tags: {
-      Environment: (toUpper(env_id))
-  }
+  tags: tagValues
 }
 
 @description('Required. The type of Integration Runtime')
