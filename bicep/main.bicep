@@ -32,6 +32,9 @@ module security 'security/main.bicep' = {
     location: location
     param_secret_pwd_example: param_secret_pwd_example
   }
+  dependsOn: [
+    dataFactory
+  ]
 }
 
 module dataFactory 'datafactory/main.bicep' = {
