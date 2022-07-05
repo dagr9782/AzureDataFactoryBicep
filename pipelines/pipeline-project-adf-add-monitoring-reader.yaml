@@ -1,0 +1,43 @@
+pool:
+  vmImage: "ubuntu-latest"
+
+trigger: none
+
+stages:
+  - stage: uat
+    displayName: "UAT"
+    jobs:
+    - job: Job_1
+      displayName: Data Factory UAT
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: 'Data Factory UAT'
+        inputs:
+          azureSubscription: 'reg-prd-br-project (SPN)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: 'az role assignment create --role "Monitoring Reader" --assignee-object-id GROUP-ID --assignee-principal-type Group --scope ADF-ID'
+
+  - stage: prd
+    displayName: "PRD"
+    jobs:
+    - deployment: GetApprovals
+      displayName: "Get Business Owner approval"
+      environment: 'project-prd'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - script: echo "Approved"
+    - job: Job_1
+      displayName: Data Factory PRD
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: 'Data Factory PRD'
+        inputs:
+          azureSubscription: 'reg-prd-br-project (SPN)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: 'az role assignment create --role "Monitoring Reader" --assignee-object-id GROUP-ID --assignee-principal-type Group --scope ADF-ID'
