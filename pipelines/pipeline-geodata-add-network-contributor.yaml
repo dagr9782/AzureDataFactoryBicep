@@ -1,0 +1,73 @@
+pool:
+  vmImage: "ubuntu-latest"
+
+trigger: none
+
+stages:
+  - stage: dev
+    displayName: "DEV"
+    jobs:
+    - job: Job_1
+      displayName: Add Network Contributor
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: 'Data Lake SPN on RG'
+        inputs:
+          azureSubscription: 'reg-dev-br-geodata (SPN)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: 'az role assignment create --role "Network Contributor" --assignee-object-id 14dac49d-5f4e-41eb-9694-f997ebd93aa8 --assignee-principal-type ServicePrincipal --scope /subscriptions/0f7d0d2a-fab8-4324-bea0-946fbbded22e/resourceGroups/rg-dev-br-geodata'
+
+  - stage: sit
+    displayName: "SIT"
+    jobs:
+    - job: Job_1
+      displayName: Add Network Contributor
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: 'Data Lake SPN on RG'
+        inputs:
+          azureSubscription: 'reg-dev-br-geodata (SPN)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: 'az role assignment create --role "Network Contributor" --assignee-object-id 14dac49d-5f4e-41eb-9694-f997ebd93aa8 --assignee-principal-type ServicePrincipal --scope /subscriptions/0f7d0d2a-fab8-4324-bea0-946fbbded22e/resourceGroups/rg-sit-br-geodata'
+
+  - stage: uat
+    displayName: "UAT"
+    jobs:
+    - job: Job_1
+      displayName: Add Network Contributor
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: 'Data Lake SPN on RG'
+        inputs:
+          azureSubscription: 'reg-prd-br-geodata (SPN)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: 'az role assignment create --role "Network Contributor" --assignee-object-id f4fe8f3f-1485-4497-8946-5aee9735e671 --assignee-principal-type ServicePrincipal --scope /subscriptions/67f5f81c-5e70-4260-bd8d-df523a19804a/resourceGroups/rg-uat-br-geodata'
+
+  - stage: prd
+    displayName: "PRD"
+    jobs:
+    - deployment: GetApprovals
+      displayName: "Get Business Owner approval"
+      environment: 'geodata-prd'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - script: echo "Approved"
+    - job: Job_1
+      displayName: Add Network Contributor
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: 'Data Lake SPN on RG'
+        inputs:
+          azureSubscription: 'reg-prd-br-geodata (SPN)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: 'az role assignment create --role "Network Contributor" --assignee-object-id f4fe8f3f-1485-4497-8946-5aee9735e671 --assignee-principal-type ServicePrincipal --scope /subscriptions/67f5f81c-5e70-4260-bd8d-df523a19804a/resourceGroups/rg-prd-br-geodata'
