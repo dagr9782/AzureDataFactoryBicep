@@ -1,0 +1,85 @@
+pool:
+  vmImage: "ubuntu-latest"
+
+trigger: none
+
+stages:
+  - stage: dev
+    displayName: "DEV"
+    jobs:
+    - job: Job_1
+      displayName: Virtual Network DEV
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: 'Virtual Network DEV'
+        inputs:
+          azureSubscription: 'reg-dev-br-project (SPN)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
+            echo -n "VNET ID: "
+            az network vnet list -g rg-dev-br-project --query "[].[id]" -o tsv
+
+  - stage: sit
+    displayName: "SIT"
+    jobs:
+    - job: Job_1
+      displayName: Virtual Network SIT
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: 'Virtual Network SIT'
+        inputs:
+          azureSubscription: 'reg-dev-br-project (SPN)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
+            echo -n "VNET ID: "
+            az network vnet list -g rg-sit-br-project --query "[].[id]" -o tsv
+
+  - stage: uat
+    displayName: "UAT"
+    jobs:
+    - job: Job_1
+      displayName: Virtual Network UAT
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: 'Virtual Network UAT'
+        inputs:
+          azureSubscription: 'reg-prd-br-project (SPN)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
+            echo -n "VNET ID: "
+            az network vnet list -g rg-uat-br-project --query "[].[id]" -o tsv
+
+  - stage: prd
+    displayName: "PRD"
+    jobs:
+    - deployment: GetApprovals
+      displayName: "Get Business Owner approval"
+      environment: 'project-prd'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - script: echo "Approved"
+    - job: Job_1
+      displayName: Virtual Network PRD
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: 'Virtual Network PRD'
+        inputs:
+          azureSubscription: 'reg-prd-br-project (SPN)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
+            echo -n "VNET ID: "
+            az network vnet list -g rg-prd-br-project --query "[].[id]" -o tsv
