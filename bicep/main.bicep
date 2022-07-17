@@ -66,4 +66,14 @@ module storage 'storage/main.bicep' = {
     tagValues: tagValues
   }
 }
+
+module databricks 'databricks/main.bicep' = {
+  scope: resourceGroup
+  name: 'databricks-${param_buildNumber}'
+  params: {
+    env_id: param_env_id
+    location: location
+    tagValues: tagValues
+  }
+}
 */
