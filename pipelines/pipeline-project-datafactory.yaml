@@ -20,7 +20,6 @@ parameters:
 stages:
   - stage: dev
     displayName: "DEV"
-    dependsOn: []
     variables:
       - group: project-datafactory-dev
     jobs:
@@ -36,7 +35,6 @@ stages:
 
   - stage: sit
     displayName: "SIT"
-    dependsOn: []
     variables:
       - group: project-datafactory-sit
     jobs:
@@ -52,7 +50,6 @@ stages:
 
   - stage: uat
     displayName: "UAT"
-    dependsOn: []
     variables:
       - group: project-datafactory-uat
     jobs:
@@ -68,7 +65,6 @@ stages:
 
   - stage: prd
     displayName: "PRD"
-    dependsOn: []
     variables:
       - group: project-datafactory-prd
     jobs:
