@@ -30,7 +30,7 @@ steps:
         --parameters param_buildNumber="$(Build.BuildNumber)" \
                      param_teamProject="$(System.TeamProject)" \
                      param_env_id="$(System.StageName)" \
-                     param_secret_pwd_example="$(secret_pwd_example)" \
+                     param_secret_pwd_example='$(secret_pwd_example)' \
                      param_vnet_address="$(vnet_address)" \
                      param_adf_ir="${{ parameters.includeIR }}"
 
@@ -48,6 +48,6 @@ steps:
         --parameters param_buildNumber="$(Build.BuildNumber)" \
                      param_teamProject="$(System.TeamProject)" \
                      param_env_id="$(System.StageName)" \
-                     param_secret_pwd_example="$(secret_pwd_example)" \
+                     param_secret_pwd_example='$(secret_pwd_example)' \
                      param_vnet_address="$(vnet_address)" \
                      param_adf_ir="${{ parameters.includeIR }}"
