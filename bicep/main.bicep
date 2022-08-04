@@ -4,6 +4,7 @@ param location string = 'brazilsouth'
 param param_buildNumber string
 param param_teamProject string
 param param_env_id string
+@secure()
 param param_secret_pwd_example string
 param param_vnet_address string
 param param_adf_ir bool
