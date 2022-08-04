@@ -10,6 +10,7 @@ param tagValues object
 param env_id string
 
 @description('Connection Password')
+@secure()
 param param_secret_pwd_example string
 
 @description('Name of the SKU desired')
@@ -34,10 +35,6 @@ var accessPolicies = [
 
 resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
   name: 'adf-${env_id}-br-project'
-}
-
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' existing = {
-  name: 'vn-${env_id}-br-project'
 }
 
 // Vault
