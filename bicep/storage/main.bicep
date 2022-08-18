@@ -148,12 +148,12 @@ resource atpSettings 'Microsoft.Security/advancedThreatProtectionSettings@2019-0
 }
 
 resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
-  name: 'pe-adf-${env_id}-br-project'
+  name: 'pe-sa-${env_id}-br-project'
   location: location
   properties: {
     privateLinkServiceConnections: [
       {
-        name: 'pe-blob-${env_id}-br-project'
+        name: 'pe-sa-${env_id}-br-project'
         properties: {
           privateLinkServiceId: storageAccount.id
           groupIds: [
