@@ -168,3 +168,14 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   }
   tags: tagValues
 }
+
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+  name: guid(storageAccount.id, dataFactory.id, 'Storage Blob Data Owner')
+  properties: {
+    description: 'ADF as Storage Blob Data Owner'
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b')
+    principalId: dataFactory.identity.principalId
+    principalType: 'ServicePrincipal'
+  }
+  scope: storageAccount
+}
