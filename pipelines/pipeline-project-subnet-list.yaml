@@ -37,7 +37,7 @@ stages:
           scriptLocation: 'inlineScript'
           inlineScript: |
             az config set extension.use_dynamic_install=yes_without_prompt
-            echo -n "VNET ID: "
+            echo -n "Subnet ID: "
             az network vnet subnet list -g rg-$(System.StageName)-br-project --vnet-name vn-$(System.StageName)-br-project --query "[].[id]" -o tsv
 
   - stage: uat
