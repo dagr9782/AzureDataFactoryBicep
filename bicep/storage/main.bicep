@@ -53,12 +53,12 @@ param supportsHttpsTrafficOnly bool = true
 var supportsBlobService = storageAccountKind == 'BlockBlobStorage' || storageAccountKind == 'BlobStorage' || storageAccountKind == 'StorageV2' || storageAccountKind == 'Storage'
 var supportsFileService = storageAccountKind == 'FileStorage' || storageAccountKind == 'StorageV2' || storageAccountKind == 'Storage'
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' existing = {
-  name: 'vn-${env_id}-br-project'
+resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
+  name: 'adf-${env_id}-br-project'
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
-  name : 'sa${env_id}brproject'
+  name : 'sa${env_id}brproject' // Max 24 characters
   location: location
   kind: storageAccountKind
   sku: {
