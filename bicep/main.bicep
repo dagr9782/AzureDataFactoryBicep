@@ -66,6 +66,9 @@ module storage 'storage/main.bicep' = {
     location: location
     tagValues: tagValues
   }
+  dependsOn: [
+    dataFactory
+  ]
 }
 
 module databricks 'databricks/main.bicep' = {
