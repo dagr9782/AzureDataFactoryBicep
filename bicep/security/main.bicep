@@ -39,7 +39,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
 
 // Vault
 
-resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: 'akv-${env_id}-br-project'
   location: location
   properties: {
@@ -66,14 +66,12 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
 
 // Secrets
 
-resource secret_pwd_project 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
-  name: 'akv-${env_id}-br-project/pwd-example'
+resource secret_pwd_project 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+  name: 'pwd-example'
+  parent: keyVault
   properties: {
     value: param_secret_pwd_example
   }
-  dependsOn: [
-    keyVault
-  ]
 }
 
 // Certificates

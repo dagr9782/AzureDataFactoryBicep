@@ -41,13 +41,6 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   tags: tagValues
 }
 
-@description('Required. The type of Integration Runtime')
-@allowed([
-  'Managed'
-  'SelfHosted'
-])
-param typeIR string = 'SelfHosted'
-
 var sub = (env_id=='dev' || env_id=='sit') ? '8af6aa43-048b-4792-aa87-a8aa7c7b7b72' : 'cadd3f73-8792-4bae-9cd7-b4a1f3ca0119'
 var linkedIR = '/subscriptions/${sub}/resourcegroups/rg-${env_id}-br-dataintegration/providers/Microsoft.DataFactory/factories/adf-${env_id}-br-dataintegration/integrationruntimes/ir-${env_id}-br-dataintegration'
 
@@ -55,7 +48,7 @@ resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes
   name: 'ir-${env_id}-br-project'
   parent: dataFactory
   properties: {
-    type: typeIR
+    type: 'SelfHosted'
     typeProperties: {
       linkedInfo: {
         authorizationType: 'RBAC'
